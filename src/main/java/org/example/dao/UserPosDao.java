@@ -3,12 +3,14 @@ package org.example.dao;
 import org.example.connectionjdbc.SingleConnection;
 import org.example.entities.UserPosJava;
 
+import java.rmi.server.ExportException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class UserPosDao {
     // Estamos mantendo na instância do objeto a conexão com o banco de dados.
@@ -20,13 +22,12 @@ public class UserPosDao {
     // O método ira persistir a nossa entidade no banco
     public void insert(UserPosJava user){
         try{
-            String sql = "insert into userposjava(id, name, email) values(?, ?,?)";
+            String sql = "insert into userposjava(name, email) values(?,?)";
             // Objeto responsável por preparar a instânciação dos memos
             PreparedStatement query = connection.prepareStatement(sql);
             // Coluna 1 - Id
-            query.setLong(1, user.getId());
-            query.setString(2,user.getName());
-            query.setString(3, user.getEmail());
+            query.setString(1,user.getName());
+            query.setString(2, user.getEmail());
             // executa a query
             query.execute();
             // Salva no banco
@@ -85,5 +86,44 @@ public class UserPosDao {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public void update(UserPosJava user){
+        try{
+            // Os simbólos de ? dizem que esse parâmetro será dinamica
+            String sql = "update userposjava set name =?, email = ? where id = "+ user.getId();
+            PreparedStatement query = connection.prepareStatement(sql);
+            // O Atualizar é similar ao cadastrar
+            query.setString(1,user.getName());
+            query.setString(2, user.getEmail());
+            query.execute();
+            connection.commit();
+        }catch(Exception e){
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(Long id){
+        try{
+            String sql = "delete from userposjava where id=" + id;
+            PreparedStatement statement =  connection.prepareStatement(sql);
+            statement.execute();
+            connection.commit();
+
+        }catch(Exception e){
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            e.printStackTrace();
+        }
+
+
     }
 }
