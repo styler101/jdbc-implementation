@@ -1,7 +1,13 @@
 package org.example;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
+
+import org.example.connectionjdbc.SingleConnection;
+import org.junit.Test;
+
+public class Main{
+    @Test
+    public void initBanco(){
+        SingleConnection.getConnection();
     }
+
 }
