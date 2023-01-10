@@ -25,12 +25,12 @@ public class Main{
         }
     }
 
-
+    @Test
     public void insert(){
         UserPosDao dao = new UserPosDao();
         UserPosJava user =  new UserPosJava();
-        user.setName("Teste");
-        user.setEmail("teste");
+        user.setName("Lucas");
+        user.setEmail("lucas@gmail.com");
         dao.insert(user);
     }
 
@@ -52,9 +52,8 @@ public class Main{
             UserPosDao dao = new UserPosDao();
             UserPosJava userPosJava = new UserPosJava();
             // para não começar com zero
-            userPosJava.setId(1L);
-            userPosJava.setName("Outro Nome");
-            userPosJava.setEmail("outroNome@gmail.com");
+            userPosJava.setName("Lucas Santos");
+            userPosJava.setEmail("Lucas@gmail.com");
             dao.update(userPosJava);
         }catch(RuntimeException e){
 
