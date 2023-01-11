@@ -1,13 +1,13 @@
 package org.example.entities;
 
-public class UserPhones {
+public class Phone {
 
     private Long id;
     private String number;
     private String type;
     private Long user_id;
 
-    public UserPhones(){
+    public Phone(){
 
     }
 

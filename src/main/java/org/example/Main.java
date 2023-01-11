@@ -2,21 +2,22 @@ package org.example;
 
 
 import org.example.connectionjdbc.SingleConnection;
+import org.example.dao.PhoneDao;
 import org.example.dao.UserPosDao;
+import org.example.entities.Phone;
+import org.example.entities.UserPhone;
 import org.example.entities.UserPosJava;
 import org.junit.Test;
 
 import java.util.List;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 public class Main{
 
-    @Test
+
     public void initBanco(){
         SingleConnection.getConnection();
     }
-    @Test
+
     public void selectAll(){
         UserPosDao userPosDao = new UserPosDao();
         List<UserPosJava> list = userPosDao.findAll();
@@ -25,7 +26,7 @@ public class Main{
         }
     }
 
-    @Test
+
     public void insert(){
         UserPosDao dao = new UserPosDao();
         UserPosJava user =  new UserPosJava();
@@ -61,7 +62,7 @@ public class Main{
         }
     }
 
-    @Test
+
     public void delete(){
         try{
             UserPosDao dao = new UserPosDao();
@@ -70,5 +71,34 @@ public class Main{
             e.printStackTrace();
         }
     }
+    @Test
+    public void insertUserPhone(){
+        try{
+            PhoneDao dao = new PhoneDao();
+            Phone phone = new Phone();
+            phone.setId(4L);
+            phone.setNumber("(31)XXXX-XXXX");
+            phone.setUser_id(4L);
+            phone.setType("Fixo 2");
+            dao.insert(phone);
+        }catch(Exception e ){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void listByJoin(){
+        try{
+          PhoneDao dao = new PhoneDao();
+          List<UserPhone> list = dao.joinTables(1L, 4L);
+          for(UserPhone item:list){
+              System.out.println(item);
+          }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 }
